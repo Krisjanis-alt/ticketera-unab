@@ -1,0 +1,137 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="header-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/mis-tickets" text="" class="back-btn"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="header-title">Detalle</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="detail-content">
+
+  <!-- Spinner -->
+  <div *ngIf="cargando" class="loading-container">
+    <ion-spinner name="crescent" color="light"></ion-spinner>
+    <p class="loading-text">Cargando ticket...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error" class="error-container">
+    <ion-icon name="alert-circle" class="error-icon"></ion-icon>
+    <p class="error-text">No se pudo cargar el ticket.</p>
+  </div>
+
+  <!-- Contenido principal -->
+  <div *ngIf="ticket && !cargando" class="detail-wrapper">
+
+    <!-- Hero section con gradiente -->
+    <div class="hero-section">
+      <div class="hero-top">
+        <p class="ticket-folio">{{ ticket.folio }}</p>
+        <span class="status-badge" [ngClass]="getCssEstado(ticket.estado)">
+          {{ ticket.estado }}
+        </span>
+      </div>
+      <h1 class="ticket-title">{{ ticket.titulo }}</h1>
+    </div>
+
+    <!-- Cards -->
+    <div class="cards-container">
+
+      <!-- Descripción -->
+      <div class="info-card">
+        <p class="card-label">Descripción</p>
+        <p class="description-text">{{ ticket.descripcion }}</p>
+      </div>
+
+      <!-- Metadata grid -->
+      <div class="info-card">
+        <p class="card-label">Detalles</p>
+        <div class="meta-grid">
+          <div class="meta-item">
+            <div class="meta-icon-wrap area">
+              <ion-icon name="briefcase-outline"></ion-icon>
+            </div>
+            <div>
+              <span class="meta-key">Área</span>
+              <span class="meta-value">{{ ticket.area }}</span>
+            </div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-icon-wrap priority">
+              <ion-icon name="warning-outline"></ion-icon>
+            </div>
+            <div>
+              <span class="meta-key">Prioridad</span>
+              <span class="meta-value">{{ ticket.prioridad }}</span>
+            </div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-icon-wrap date">
+              <ion-icon name="calendar-outline"></ion-icon>
+            </div>
+            <div>
+              <span class="meta-key">Creación</span>
+              <span class="meta-value">{{ ticket.fecha_creacion | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-icon-wrap id">
+              <ion-icon name="pricetag-outline"></ion-icon>
+            </div>
+            <div>
+              <span class="meta-key">ID</span>
+              <span class="meta-value">#{{ ticket.id }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comentarios -->
+      <div class="info-card">
+        <p class="card-label">Respuestas</p>
+
+        <div class="comments-empty" *ngIf="comentarios.length === 0">
+          <ion-icon name="chatbubble-outline"></ion-icon>
+          <span>Sin respuestas aún</span>
+        </div>
+
+        <div class="comment-item" *ngFor="let c of comentarios">
+          <div class="comment-header">
+            <span class="comment-author">{{ c.autor }}</span>
+            <span class="comment-date">{{ c.fecha | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          <p class="comment-body">{{ c.contenido }}</p>
+        </div>
+      </div>
+
+      <!-- Formulario responder -->
+      <div class="info-card reply-card">
+        <p class="card-label">Agregar respuesta</p>
+        <div class="reply-autor-row">
+          <input
+            class="reply-input"
+            [(ngModel)]="nuevoAutor"
+            placeholder="Tu nombre"
+          />
+        </div>
+        <textarea
+          class="reply-textarea"
+          [(ngModel)]="nuevoContenido"
+          rows="3"
+          placeholder="Escribe tu respuesta..."
+        ></textarea>
+        <button
+          class="reply-btn"
+          (click)="enviarComentario()"
+          [disabled]="!nuevoContenido.trim() || !nuevoAutor.trim() || enviando"
+        >
+          <ion-icon name="send-outline"></ion-icon>
+          {{ enviando ? 'Enviando...' : 'Enviar respuesta' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</ion-content>

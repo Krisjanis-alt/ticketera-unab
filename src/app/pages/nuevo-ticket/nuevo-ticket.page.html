@@ -1,0 +1,74 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="form-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/mis-tickets" class="back-btn"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="form-title">Nuevo Ticket</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="form-content">
+  <form [formGroup]="ticketForm" (ngSubmit)="onSubmit()" class="form-wrapper">
+
+    <p class="form-section-label">Información del ticket</p>
+
+    <div class="field-group">
+      <label class="field-label">Título <span class="required">*</span></label>
+      <ion-input
+        class="custom-input"
+        formControlName="titulo"
+        type="text"
+        placeholder="Ej. Falla en el sistema de pagos"
+      ></ion-input>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Descripción <span class="required">*</span></label>
+      <ion-textarea
+        class="custom-input custom-textarea"
+        formControlName="descripcion"
+        rows="5"
+        placeholder="Detalla el problema con el mayor contexto posible..."
+      ></ion-textarea>
+    </div>
+
+    <p class="form-section-label" style="margin-top: 8px;">Clasificación</p>
+
+    <div class="selects-row">
+      <div class="field-group half">
+        <label class="field-label">Área</label>
+        <ion-select
+          class="custom-select"
+          formControlName="area"
+          interface="action-sheet"
+        >
+          <ion-select-option value="Sistemas">Sistemas</ion-select-option>
+          <ion-select-option value="Mantenimiento">Mantenimiento</ion-select-option>
+          <ion-select-option value="Logística">Logística</ion-select-option>
+        </ion-select>
+      </div>
+
+      <div class="field-group half">
+        <label class="field-label">Prioridad</label>
+        <ion-select
+          class="custom-select"
+          formControlName="prioridad"
+          interface="action-sheet"
+        >
+          <ion-select-option value="Baja">Baja</ion-select-option>
+          <ion-select-option value="Media">Media</ion-select-option>
+          <ion-select-option value="Alta">Alta</ion-select-option>
+        </ion-select>
+      </div>
+    </div>
+
+    <button
+      class="submit-btn"
+      type="submit"
+      [disabled]="!ticketForm.valid"
+    >
+      Enviar Ticket
+    </button>
+
+  </form>
+</ion-content>

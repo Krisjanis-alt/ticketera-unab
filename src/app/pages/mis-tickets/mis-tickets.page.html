@@ -1,0 +1,49 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="list-toolbar">
+    <div class="toolbar-inner">
+      <h1 class="page-heading">Mis Tickets</h1>
+      <span class="ticket-count" *ngIf="tickets.length > 0">{{ tickets.length }}</span>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="list-content">
+
+  <!-- Empty state -->
+  <div class="empty-state" *ngIf="tickets.length === 0">
+    <ion-icon name="ticket-outline" class="empty-icon"></ion-icon>
+    <p class="empty-title">Sin tickets</p>
+    <p class="empty-subtitle">Crea un nuevo ticket presionando el botón +</p>
+  </div>
+
+  <!-- Lista -->
+  <div class="tickets-list" *ngIf="tickets.length > 0">
+    <div
+      class="ticket-card"
+      *ngFor="let ticket of tickets"
+      [routerLink]="['/ticket', ticket.id]"
+    >
+      <div class="ticket-card-top">
+        <span class="ticket-titulo">{{ ticket.titulo }}</span>
+        <span class="status-pill" [ngClass]="getCssPill(ticket.estado)">{{ ticket.estado }}</span>
+      </div>
+      <p class="ticket-folio">{{ ticket.folio }}</p>
+      <div class="ticket-card-footer">
+        <span class="ticket-meta">
+          <ion-icon name="briefcase-outline"></ion-icon> {{ ticket.area }}
+        </span>
+        <span class="ticket-meta priority" [ngClass]="'prio-' + ticket.prioridad.toLowerCase()">
+          <ion-icon name="warning-outline"></ion-icon> {{ ticket.prioridad }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAB -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button routerLink="/nuevo-ticket" class="fab-btn">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
