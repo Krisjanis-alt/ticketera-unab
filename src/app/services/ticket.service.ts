@@ -26,27 +26,27 @@ export interface Comentario {
   providedIn: 'root'
 })
 export class TicketService {
-  private apiUrl = `${environment.apiUrl}tickets/`;
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
   getTickets(): Observable<Ticket[]> {
-    return this.http.get<Ticket[]>(this.apiUrl);
+    return this.http.get<Ticket[]>(`${this.apiUrl}tickets/`);
   }
 
   getTicket(id: number): Observable<Ticket> {
-    return this.http.get<Ticket>(`${this.apiUrl}${id}/`);
+    return this.http.get<Ticket>(`${this.apiUrl}tickets/${id}/`);
   }
 
   createTicket(ticket: Ticket): Observable<Ticket> {
-    return this.http.post<Ticket>(this.apiUrl, ticket);
+    return this.http.post<Ticket>(`${this.apiUrl}tickets/`, ticket);
   }
 
   getComentarios(ticketId: number): Observable<Comentario[]> {
-    return this.http.get<Comentario[]>(`${this.apiUrl}${ticketId}/comentarios/`);
+    return this.http.get<Comentario[]>(`${this.apiUrl}tickets/${ticketId}/comentarios/`);
   }
 
   addComentario(ticketId: number, comentario: Comentario): Observable<Comentario> {
-    return this.http.post<Comentario>(`${this.apiUrl}${ticketId}/comentarios/`, comentario);
+    return this.http.post<Comentario>(`${this.apiUrl}tickets/${ticketId}/comentarios/`, comentario);
   }
 }
