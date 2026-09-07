@@ -49,4 +49,12 @@ export class TicketService {
   addComentario(ticketId: number, comentario: Comentario): Observable<Comentario> {
     return this.http.post<Comentario>(`${this.apiUrl}tickets/${ticketId}/comentarios/`, comentario);
   }
+
+  wakeup(): void {
+    // Petición silenciosa para despertar el servidor en Render
+    this.http.get(`${this.apiUrl}tickets/`).subscribe({
+      next: () => console.log('Backend wake-up ping exitoso'),
+      error: () => console.log('Backend wake-up ping enviado')
+    });
+  }
 }
